@@ -8,7 +8,7 @@ namespace Ford.Tracker.Api.Controllers
     {
         public IActionResult Get()
         {
-            return Ok();
+            return Ok("Pong");
         }
     }
 }
