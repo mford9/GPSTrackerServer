@@ -1,18 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Rebus.Bus;
+using Ford.Tracker.Api.Messaging.Payload;
 
-namespace Ford.Tracker.Api
+namespace Ford.Tracker.Api.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private IBus _bus { get; set; }
+
+        public ValuesController(IBus bus)
+        {
+            bus.Send( new GlobalPositioningSystemMessage { test = "jshedfjks" }).Wait();
+            _bus = bus;
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            //await _bus.Advanced.Routing.Send("Test", new GlobalPositioningSystemMessage { test = "jshedfjks" });
             return new string[] { "value1", "value2" };
         }
 
