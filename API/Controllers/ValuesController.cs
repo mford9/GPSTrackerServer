@@ -8,12 +8,9 @@ namespace Ford.Tracker.Api.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        private IBus _bus { get; set; }
-
-        public ValuesController(IBus bus)
+     
+        public ValuesController()
         {
-            bus.Send( new GlobalPositioningSystemMessage { test = "jshedfjks" }).Wait();
-            _bus = bus;
         }
 
         // GET api/values
