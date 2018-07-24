@@ -17,14 +17,16 @@ namespace Ford.Tracker.Api.Business
 
         public Task MapAndSendToMessengerAsync(string gpsInformation)
         {
-            var task = new Task(() =>
-            {
-                _bus.Advanced.Routing.Send(QueueName.GlobalPositioningSystemPersistanceQueueName, new GlobalPositioningSystemMessage { test = gpsInformation });
-            });
+           return _bus.Send(new GlobalPositioningSystemMessage { test = gpsInformation });
+            //var task = new Task(() =>
+           // {
+              //  _bus.Publish(new GlobalPositioningSystemMessage { test = gpsInformation });
+                //_bus.Advanced.Routing.Send(QueueName.GlobalPositioningSystemPersistanceQueueName, new GlobalPositioningSystemMessage { test = gpsInformation });
+            //});
 
-            task.Start();
+           // task.Start();
 
-            return task;
+//return task;
         }
     }
 }

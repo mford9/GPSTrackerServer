@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Ford.Tracker.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("GlobalPositioningSystem")]
+    [Route("[controller]")]
     public class GlobalPositioningSystemController : Controller
     {
         private readonly IGlobalPositioningSystemBusiness _globalPositioningSystemBusiness;
@@ -19,7 +19,7 @@ namespace Ford.Tracker.Api.Controllers
 
         [HttpPost]
         [Route("send-current-coordinates")]
-        public async Task<IActionResult> SendCurrentCoordinates(GlobalPositioningSystemCreateRequest globalPositioningSystemCreateRequest)
+        public async Task<IActionResult> SendCurrentCoordinates([FromBody]GlobalPositioningSystemCreateRequest globalPositioningSystemCreateRequest)
         {
             if (globalPositioningSystemCreateRequest == null)
             {
@@ -29,14 +29,6 @@ namespace Ford.Tracker.Api.Controllers
             await _globalPositioningSystemBusiness.MapAndSendToMessengerAsync(globalPositioningSystemCreateRequest.GlobalPositioningData);
 
             return Accepted();
-        }
-                
-        [HttpGet]
-        [Route("test")]
-        public IEnumerable<string> Get()
-        {
-            //await _bus.Advanced.Routing.Send("Test", new GlobalPositioningSystemMessage { test = "jshedfjks" });
-            return new string[] { "value1", "value2" };
-        }
+        }        
     }
 }
