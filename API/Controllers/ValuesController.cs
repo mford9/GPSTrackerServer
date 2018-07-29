@@ -2,15 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Rebus.Bus;
 using Ford.Tracker.Api.Messaging.Payload;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Ford.Tracker.Api.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-     
-        public ValuesController()
-        {
+        public IHostingEnvironment HostingEnvironment { get; }
+        public IConfiguration Configuration { get; }
+
+        public ValuesController(IHostingEnvironment hostingEnvironment, IConfiguration configuration)
+        {            
+            HostingEnvironment = hostingEnvironment;
+            Configuration = configuration;
         }
 
         // GET api/values
@@ -18,7 +25,7 @@ namespace Ford.Tracker.Api.Controllers
         public IEnumerable<string> Get()
         {
             //await _bus.Advanced.Routing.Send("Test", new GlobalPositioningSystemMessage { test = "jshedfjks" });
-            return new string[] { "value1", "value2" };
+            return new string[] { HostingEnvironment.IsProduction().ToString(), Configuration.GetValue<string>("ServiceBusConnectionString")  };
         }
 
         // GET api/values/5

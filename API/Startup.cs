@@ -26,24 +26,23 @@ namespace Ford.Tracker.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc();            
+            
+            services.AddTransient<IGlobalPositioningSystemBusiness, GlobalPositioningSystemBusiness>();
 
             services.AddRebus(con =>
             con.Logging(l => l.None())
             .Transport(t => t.UseRabbitMqAsOneWayClient(Configuration.GetSection(AppSettingConstants.ServiceBusConnectionString).Value))
             .Routing(r => r.TypeBased().Map<GlobalPositioningSystemMessage>(QueueName.GlobalPositioningSystemPersistanceQueueName)));
 
-
-            services.AddTransient<IGlobalPositioningSystemBusiness, GlobalPositioningSystemBusiness>();
-
             // TODO 
             // .Transport(t => t.UseRabbitMq(Configuration.GetSection(AppSettingConstants.ServiceBusConnectionString).Value, "AwesomeQueue"))); this needs to be added
             if (Environment.IsDevelopment())
-            {
+            {                
             }
             else
-            {
-            }
+            {                
+            }           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

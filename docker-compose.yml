@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api:
+    image: api
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    container_name: my-web-container
+    environment:
+      - ServiceBusConnectionString=amqp://guest:guest@gpsrabbit:5672
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+  rabbitmq:
+    image: "rabbitmq:3.7-management" 
+    ports: 
+      - "5672"
+      - "15671"
+      - "15672"
+      - "4369"
+      - "5671"
+      - "25672"
+    container_name: gpsrabbit
