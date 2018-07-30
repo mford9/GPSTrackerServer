@@ -1,5 +1,15 @@
 version: '3'
 services:
+  rabbitmq:
+    image: "rabbitmq:3.7-management" 
+    ports: 
+      - "32771:5672"
+      - "32770:15671"
+      - "32769:15672"
+      - "32773:4369"
+      - "32772:5671"
+      - "25672"
+    container_name: GPS-Tracker-RabbitMq
   api:
     image: api
     build:
@@ -7,7 +17,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:8080"
-    container_name: my-web-container
+    container_name: GPS-Tracker-Api
+    restart: on-failure
     environment:
       - ServiceBusConnectionString=amqp://guest:guest@gpsrabbit:5672
       - ASPNETCORE_ENVIRONMENT=Production
@@ -15,13 +26,3 @@ services:
       - rabbitmq
     links:
       - rabbitmq
-  rabbitmq:
-    image: "rabbitmq:3.7-management" 
-    ports: 
-      - "5672"
-      - "15671"
-      - "15672"
-      - "4369"
-      - "5671"
-      - "25672"
-    container_name: gpsrabbit
